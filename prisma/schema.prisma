@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Parking {
+  id String @id @default(uuid())
+  totalSpots Int //total de vagas no estacionamento
+  occupiedSpots Int @default(0) //total de vagas ocupadas
+  availableSpots Int @default(0) //total de vagas disponíveis
+  @@map("parking")
+}
+
+model Vehicle {
+  id String @id @default(uuid())
+  license String @unique //placa do veículo
+  model String //modelo do veículo
+  color String //cor do veículo
+  entryTime DateTime @default(now()) // data que o carro entrou no estacionamento
+  exitTime DateTime? // data que o carro saiu do estacionamento (null se ainda não saiu)
+  @@map("vehicles")
+}
+
+model MonthlyPayer {
+  id String @id @default(uuid())
+  license String @unique //placa do veículo
+  model String //modelo do veículo
+  color String //cor do veículo
+  email String // email do mensalista
+  cpf String @unique //cpf do mensalista
+  numero String @unique // número de contato do mensalista
+  @@map("monthlyPayers")
+}
