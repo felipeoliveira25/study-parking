@@ -1,5 +1,15 @@
-import { prisma } from "@/lib/prisma"
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+
+/**
+ * route for vehicle in API
+ * @field GET => get all vehicles
+ * @field POST => add new vehicle
+ * @field DELETE => delete vehicle by your license
+ * 
+ */
+
+
 
 export async function GET() {
     try {
@@ -12,7 +22,8 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-    const bodyReq = await req.json()
+    try {
+        const bodyReq = await req.json()
     const { license, model, color, entryTime } = bodyReq;
 
     const vehicleFull = await prisma.vehicle.create({
@@ -21,4 +32,8 @@ export async function POST(req: Request) {
     })
 
     return NextResponse.json(vehicleFull, { status: 201})
+    } catch (error) {
+        console.log(error)
+    }
+    
 }
